@@ -1,11 +1,26 @@
 #Importing the AWS SDK
 import boto3
 
+session = boto3.Session(profile_name='sandbox')
 #Creading workspace client object 
-client = boto3.client("workspaces")
+client = session.client("workspaces")
 
 #Description of all running workspace
 response = client.describe_workspaces()
+
+#filter tag: <<start>> and <<stopped>> EC2 instances
+filters = [{
+            'Name': 'tag:start', 
+            'Values': ['true']
+        },
+        {
+            'Name': 'instance-state-name', 
+            'Values': ['stopped']
+        }
+    ]
+
+#create parameter for instance ids of filtered EC2 instances
+#filteredWorkspace = [instance.id for instance in ec2.instances.filter(Filters=filters)]
 
 #Looping over all workspaces in response
 for workspace in response["Workspaces"]:
@@ -16,7 +31,12 @@ for workspace in response["Workspaces"]:
     workspaceId = str(workspace["WorkspaceId"])
     runningMode = workspace["WorkspaceProperties"]["RunningMode"]
     
-    
+    response = client.describe_tags(
+        ResourceId=workspaceId
+    )
+    print (response)
+    raise
+
     #Starting turned off workspaces
     if state=="STOPPED":
 
