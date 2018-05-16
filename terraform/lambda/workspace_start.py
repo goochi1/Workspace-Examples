@@ -19,9 +19,7 @@ def lambda_handler(event, context):
             }
         ]
 
-    #create parameter for instance ids of filtered EC2 instances
-    #filteredWorkspace = [instance.id for instance in ec2.instances.filter(Filters=filters)]
-
+def lambda_handler(event, context):
     #Looping over all workspaces in response
     for workspace in response["Workspaces"]:
 
@@ -31,12 +29,7 @@ def lambda_handler(event, context):
         workspaceId = str(workspace["WorkspaceId"])
         runningMode = workspace["WorkspaceProperties"]["RunningMode"]
         
-        response = client.describe_tags(
-            ResourceId=workspaceId
-        )
-        print (response)
-        raise
-
+        
         #Starting turned off workspaces
         if state=="STOPPED":
 

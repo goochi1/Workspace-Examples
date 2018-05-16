@@ -10,6 +10,10 @@ def lambda_handler(event, context):
     #Looping over all workspaces in response
     for workspace in response["Workspaces"]:
 
+def lambda_handler(event, context):
+    #Looping over all workspaces in response
+    for workspace in response["Workspaces"]:
+
         #Some temporary variables for each workspace
         RunningMode = workspace["WorkspaceProperties"]["RunningMode"]
         workspaceId = str(workspace["WorkspaceId"])
